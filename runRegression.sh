@@ -8,12 +8,19 @@ echo "===== COMPILING SCIANTIX ====="
 ./Allclean.sh || true
 ./Allmake.sh
 
+#Pre execution
+#Verification of input settings and data
+#Verification of the solvers
+
 # Determine number of jobs (nproc if available, else 4)
 JOBS=$(nproc 2>/dev/null || echo 4)
 
 echo ""
 echo "===== RUNNING REGRESSION TESTS (using $JOBS threads) ====="
 python3 -m regression.runner -j "$JOBS" "$@"
+
+#Validations of the results
+#Execution Time
 
 echo ""
 echo "===== DONE ====="
