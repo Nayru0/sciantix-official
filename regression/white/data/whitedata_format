@@ -1,0 +1,25 @@
+white_data_raw
+
+Test Name	
+Grain Boundary Area (um2)	
+Bubble Density (um-2)	
+Intergranular Swelling (%)	
+Grain Face Coverage by Porosity (%)	
+Projected Radius (um)	
+Body Length (um)	
+Number of Lobes (/) 	
+Vented Fraction (%)
+
+========================================
+
+white_data (SI units)
+
+Test Name	
+Grain Boundary Area (m2)	
+Bubble Density (m-2)	
+Intergranular Swelling (/)	
+Grain Face Coverage by Porosity (/)	
+Projected Radius (m)	
+Body Length (m)	
+Number of Lobes (/) 	
+Vented Fraction (/)
