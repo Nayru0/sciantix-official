@@ -72,8 +72,8 @@ def main():
     os.makedirs(outdir, exist_ok=True)
 
     #Change the column name depending on which value to compare
-    col_out = "Intergranular bubble concentration (bub/m2)" #Name of the column in the output file
-    col_exp = "Bubble Density (m-2)" #Name of the column in the experimental file
+    col_out = "Intergranular fractional coverage (/)" #Name of the column in the output file
+    col_exp = "Grain Face Coverage by Porosity (/)" #Name of the column in the experimental file
     #You can find the reference column names in white/data/whitedata_format.txt and white/data/output_format.txt
 
     # load experimental swelling
@@ -117,7 +117,7 @@ def main():
     test_arr = np.array(test_list)
 
     # plot
-    parity_plot(exp_arr, gold_arr, test_arr, "white_swelling", f"White – {col_exp}", outdir)
+    parity_plot(exp_arr, gold_arr, test_arr, f"white_{col_exp.replace(' ', '_').replace('/','')}", f"White – {col_exp}", outdir)
 
     # --------------------
     # Statistical analysis
