@@ -72,8 +72,8 @@ def main():
     os.makedirs(outdir, exist_ok=True)
 
     #Change the column name depending on which value to compare
-    col_out = "Intergranular gas swelling (/)" #Name of the column in the output file
-    col_exp = "Intergranular Swelling (/)" #Name of the column in the experimental file
+    col_out = "Intergranular bubble concentration (bub/m2)" #Name of the column in the output file
+    col_exp = "Bubble Density (m-2)" #Name of the column in the experimental file
     #You can find the reference column names in white/data/whitedata_format.txt and white/data/output_format.txt
 
     # load experimental swelling
