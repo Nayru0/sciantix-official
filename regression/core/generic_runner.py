@@ -9,6 +9,13 @@ import multiprocessing
 from regression.core.common import clean_case_dir, run_sciantix, load_output, load_gold
 from regression.core.compare import compare_outputs
 
+### NEO4MAT - SCIANTIX-DIVA: export semantic outputs and variable catalog for White case study
+from regression.white.semantic_export import (
+    export_white_case_semantic_outputs,
+    export_white_experimental_measurements,
+)
+from regression.white.variable_metadata_export import export_variable_catalog
+###
 
 def run_single_case(args):
     """
@@ -25,6 +32,12 @@ def run_single_case(args):
         # run phase
         if mode_gold in (0, 1):
             run_sciantix(case)
+
+            ### NEO4MAT - SCIANTIX-DIVA
+            if group_name == "white":
+                export_white_case_semantic_outputs(case)
+            ### 
+
             clean_case_dir(case, 0)
 
         # gold rewrite mode
@@ -86,6 +99,12 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
         return []
 
     print(f"Running {len(tasks)} cases in {group_name} with {jobs} threads...")
+
+    ### NEO4MAT - SCIANTIX-DIVA
+    if group_name == "white":
+        export_white_experimental_measurements(base)
+        export_variable_catalog(base)
+    ###
 
     results = []
     
