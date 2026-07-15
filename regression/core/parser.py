@@ -12,7 +12,8 @@ class SciantixOutput:
             delimiter='\t',
             dtype=str,
             filling_values="nan",
-            autostrip=True
+            autostrip=True,
+            usecols=range(34)
         )
 
         if raw.ndim == 1:
