@@ -10,8 +10,11 @@ import json
 import os
 import re
 import subprocess
+import numpy as np
 from datetime import datetime, timezone
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
+
+from numpy import NaN
 
 from regression.white.variable_metadata_export import export_variable_catalog, unit_uri
 
@@ -29,7 +32,7 @@ _VARIABLE_CATALOG = "../metadata/variables/sciantix_variable_catalog.jsonld"
 
 _SCHEMA_RELATIVE_PATH = "../metadata/schema/output.schema.json"
 _INPUT_SCHEMA_RELATIVE_PATH = "../metadata/schema/input.schema.json"
-_EXPERIMENTAL_SWELLING_FILE = "data/ig_swelling.txt"
+_EXPERIMENTAL_DATA_FILE = "data/white_data.txt"
 _GENERATED_SIDECAR_FILENAMES = {
     "input.json",
     "output.json",
@@ -76,7 +79,6 @@ _SETTING_MODEL_MAP = {
     "iGrainBoundaryMicroCracking": ["model:grain-boundary-micro-cracking"],
     "iGrainBoundaryVenting": ["model:grain-boundary-venting"],
 }
-
 
 def _split_tsv_line(line: str) -> List[str]:
     """Split a legacy tab-separated row and remove trailing empty cells.
@@ -241,34 +243,61 @@ def _file_record(case_dir: str, filename: str, role: str) -> dict:
         "size_bytes": os.path.getsize(path),
     }
 
+def parse_quantity_header(header: str) -> Tuple[str, str]:
+    """
+    Extract the label and unit from a physical quantity header.
+    Examples:
+    - "Intergranular Gas Swelling (/)" -> ("Intergranular Gas Swelling", "/")
+    - "Bubble Density (bub/m-2)"       -> ("Bubble Density", "bub/m-2")
+    - "Sans Unite"                     -> ("Sans Unite", "/")
+    """
+    # Use regex to match the pattern "Label (Unit)"
+    match = re.match(r"^(.*?)\s*\(([^()]+)\)\s*$", header.strip())
+    
+    if match:
+        label = match.group(1).strip()
+        unit = match.group(2).strip()
+        return label, unit
+    
+    # If no parentheses are found, return the header as label and "/" as unit
+    return header.strip(), "/"
 
 def _case_measurement_id(case_id: str) -> str:
     """Return a stable local identifier for a White validation measurement."""
     return f"white-measurement:{case_id}"
 
 
-def _load_experimental_swelling(white_root: str) -> Dict[str, float]:
-    """Load case-level White intergranular swelling validation targets."""
-    path = os.path.join(white_root, _EXPERIMENTAL_SWELLING_FILE)
+def _load_experimental_data(white_root: str) -> Dict[str, Dict[str, Any]]:
+    """Load White Data from the legacy ``data/white_data.txt`` file.
+    Returns a dictionnary mapping quantities to a dictionnary mapping case_id to value."""
+    path = os.path.join(white_root, _EXPERIMENTAL_DATA_FILE)
     measurements = {}
     with open(path, "r", encoding="utf-8") as handle:
+        heading = handle.readline().strip().split("\t")
+        for quantity in heading[1:]:
+            measurements[quantity] = {}
         for line in handle:
-            raw = line.strip()
-            if not raw:
+            raws = line.strip().split()
+            case_id = raws[0]
+            if not raws:
                 continue
-            case_id, value = raw.split()[:2]
-            measurements[case_id] = float(value)
+            for i in range(1,len(raws)):
+                if raws[i] == "/":
+                    continue
+                else:
+                    value = float(raws[i])
+                measurements[heading[i]][case_id] = value
     return measurements
 
 
 def export_white_experimental_measurements(white_root: str) -> str:
     """Export White validation measurements as a compact JSON-LD dataset.
 
-    The source values come from ``data/ig_swelling.txt`` and are represented as
+    The source values come from ``data/white_data.txt`` and are represented as
     SOSA observations inside a DCAT dataset. The export is regenerated together
     with the White semantic sidecars.
     """
-    measurements = _load_experimental_swelling(white_root)
+    measurements = _load_experimental_data(white_root)
     output_dir = os.path.join(white_root, "metadata", "experimental")
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, "white_experimental_measurements.jsonld")
@@ -296,22 +325,22 @@ def export_white_experimental_measurements(white_root: str) -> str:
             "measurement": "dcterms:hasPart",
         },
         "@type": "dcat:Dataset",
-        "dcterms:identifier": "white-2004-intergranular-swelling-validation-targets",
-        "dcterms:title": "White intergranular swelling validation targets for SCIANTIX regression cases",
-        "dcterms:description": "Case-level intergranular gas swelling values used by the SCIANTIX White regression parity workflow.",
+        "dcterms:identifier": "white-2004-intergranular-data-validation-targets",
+        "dcterms:title": "White intergranular data validation targets for SCIANTIX regression cases",
+        "dcterms:description": "Case-level intergranular quantities whose values are used by the SCIANTIX White regression parity workflow.",
         "generatedAt": exported_at,
         "source": _DCTERMS_SOURCES,
-        "dcterms:relation": _EXPERIMENTAL_SWELLING_FILE,
+        "dcterms:relation": _EXPERIMENTAL_DATA_FILE,
         "measurement": [
             {
                 "@id": _case_measurement_id(case_id),
                 "@type": "sosa:Observation",
                 "caseId": case_id,
-                "quantity": "Intergranular gas swelling",
+                "quantity": parse_quantity_header(quantity)[0],
                 "value": value,
-                "unit": "%",
+                "unit": parse_quantity_header(quantity)[1],
             }
-            for case_id, value in sorted(measurements.items())
+            for quantity in measurements.keys() for case_id, value in sorted(measurements[quantity].items()) 
         ],
     }
 
@@ -701,9 +730,18 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
     exported_at = _exported_at_utc(case_dir)
     case_id = os.path.basename(os.path.normpath(case_dir))
     white_root = os.path.dirname(__file__)
-    experimental_swelling = _load_experimental_swelling(white_root).get(case_id)
-    if experimental_swelling is None:
-        raise ValueError(f"Missing experimental swelling value for case: {case_id}")
+    experimental_data = _load_experimental_data(white_root)
+
+    if experimental_data is None:
+        raise ValueError(f"Missing experimental data for case: {case_id}")
+
+    quantities = experimental_data.keys()
+    values = {
+    quantity : experimental_data[quantity].get(case_id)
+    if quantity in experimental_data and case_id in experimental_data[quantity]
+    else np.nan
+    for quantity in quantities
+    }
 
     payload_input_json = {
         "format_version": "0.1.0",
@@ -800,13 +838,13 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
         metadata_input_files,
         output_files,
         _software_provenance(case_dir),
-        {
+        [{
             "@id": _case_measurement_id(case_id),
-            "quantity": "Intergranular gas swelling",
-            "value": experimental_swelling,
-            "unit": "%",
+            "quantity": parse_quantity_header(quantity)[0],
+            "value": values[quantity],
+            "unit": parse_quantity_header(quantity)[1],
             "source": _EXPERIMENTAL_MEASUREMENTS,
-        },
+        } for quantity in quantities if not np.isnan(values[quantity])],
     )
 
     with open(case_metadata_jsonld, "w", encoding="utf-8") as handle:
@@ -832,6 +870,7 @@ def main() -> int:
     """Regenerate all White semantic exports and print the case count."""
     white_root = os.path.dirname(__file__)
     exported = 0
+    _load_experimental_data(white_root)  # Ensure the experimental data is loaded
     export_white_experimental_measurements(white_root)
     export_variable_catalog(white_root)
 

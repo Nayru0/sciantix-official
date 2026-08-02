@@ -32,7 +32,7 @@
   },
   "@type": "csvw:Table",
   "caseId": "test_White2004_4064-2",
-  "generatedAt": "2026-07-15T17:06:57+00:00",
+  "generatedAt": "2026-07-27T12:30:34+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"

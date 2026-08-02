@@ -51,7 +51,7 @@
     "dcat:Dataset"
   ],
   "caseId": "test_White2004_4064-1",
-  "generatedAt": "2026-07-15T17:06:57+00:00",
+  "generatedAt": "2026-07-27T12:30:34+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -61,13 +61,57 @@
   "softwareSource": "../metadata/sources/sciantix_software_sources.jsonld",
   "variableCatalog": "../metadata/variables/sciantix_variable_catalog.jsonld",
   "experimentalDataset": "../metadata/experimental/white_experimental_measurements.jsonld",
-  "validationTarget": {
-    "@id": "white-measurement:test_White2004_4064-1",
-    "quantity": "Intergranular gas swelling",
-    "value": 1.07,
-    "unit": "%",
-    "source": "../metadata/experimental/white_experimental_measurements.jsonld"
-  },
+  "validationTarget": [
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "quantity": "Intergranular bubble concentration",
+      "value": 950000000000.0,
+      "unit": "bub/m2",
+      "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.0107,
+      "unit": "/",
+      "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "quantity": "Intergranular fractional coverage",
+      "value": 0.4067,
+      "unit": "/",
+      "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "quantity": "Intergranular bubble radius",
+      "value": 2.7e-07,
+      "unit": "m",
+      "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "quantity": "Body Length",
+      "value": 7.6e-07,
+      "unit": "m",
+      "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "quantity": "Number of Lobes",
+      "value": 2.9,
+      "unit": "/",
+      "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "quantity": "Intergranular vented fraction",
+      "value": 0.324,
+      "unit": "/",
+      "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+    }
+  ],
   "software": {
     "@type": [
       "prov:SoftwareAgent",
@@ -80,53 +124,53 @@
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
     "repository_branch": "main",
-    "repository_commit": "c87f290153f16798f1ae15fe0649ff7f96c67bd2",
+    "repository_commit": "70b658f12310f2634748cdf15fd71e46ce8ef1dc",
     "repository_is_dirty": true
   },
   "inputFile": [
     {
       "role": "settings",
       "path": "input_settings.txt",
-      "sha256": "187601b196f902e3214cf3d7cf6f6e5f51ab4a35bcb43120e00e530b53effade",
-      "size_bytes": 2478
+      "sha256": "44eef2479f4a43fd03a021bbad45c5187f9e767b852de87fc5224aeed0c116d4",
+      "size_bytes": 2502
     },
     {
       "role": "history",
       "path": "input_history.txt",
-      "sha256": "9de075879d147239bb8508d51fb327c8be103114b9dd85d6882721ae5511d30e",
-      "size_bytes": 330
+      "sha256": "25afaffc2fc347884f749db43ee0bf778506d58904bf65eb194c1b03ce148717",
+      "size_bytes": 335
     },
     {
       "role": "initial_conditions",
       "path": "input_initial_conditions.txt",
-      "sha256": "0a3b6d4dc8d91715cf7fe8532fce9eb083bc1d82c738fb9e1da2e141368b653a",
-      "size_bytes": 1176
+      "sha256": "e525fb1173b0856d8a24f6dc4c63d02d451945f53d41cebc4491248d5c8c779d",
+      "size_bytes": 1201
     },
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "f4c1070b6a5107dfd8a56ecb2aac6191fdc3b99fcd85938c7c2e3c87cf5c15a5",
-      "size_bytes": 13681
+      "sha256": "baba5911d1ee1627c6e90fcad609cc96c8efcb3a21350b650d76a6533bc306a9",
+      "size_bytes": 14157
     }
   ],
   "outputFile": [
     {
       "role": "native_output",
       "path": "output.txt",
-      "sha256": "c512f1cebb6943a2de3eb5927718ae9704fabe86aed2da4cbd03a588c62c0edd",
-      "size_bytes": 198378
+      "sha256": "9cd527544b327ba4b3811b28bddf914649c6c9927a188cf2b727f5fd78dff7cf",
+      "size_bytes": 198883
     },
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "a052e32d0816af5f274a74c57983d174c2e573626f7952cf42d7de62ffba860f",
-      "size_bytes": 370728
+      "sha256": "d904990516eaba93828893b3cf66e069b7b2bccde369ffdb0f8bf9d6b479166d",
+      "size_bytes": 389160
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "4677cc347c32697a1aee92d5192508d4c1906f941a33cf3eda4f3f18b96b1b51",
-      "size_bytes": 334616
+      "sha256": "db2828ff8afdd9aeeed0a4c484625df34d87ba5f1ac15812d274799d861364f5",
+      "size_bytes": 353076
     }
   ]
 }

@@ -206,7 +206,7 @@ def main():
     else:
         #Lists of physical quantities to compare
         list_col_out = ["Intergranular bubble concentration (bub/m2)","Intergranular gas swelling (/)","Intergranular fractional coverage (/)","Intergranular bubble radius (m)"]
-        list_col_exp = ["Intergranular bubble concentration (bub/m2)","Intergranular gas swelling (/)","Intergranular fractional coverage (/)","Intergranular bubble radius (m)"]
+        list_col_exp = ["Bubble Density (m-2)","Intergranular Swelling (/)","Grain Face Coverage by Porosity (/)","Projected Radius (m)"]
         
         accumulated_results = {}
         results = []

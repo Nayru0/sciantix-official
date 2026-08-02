@@ -7,14 +7,15 @@ import numpy as np
 
 class SciantixOutput:
     def __init__(self, path):
+
         raw = np.genfromtxt(
             path,
             delimiter='\t',
             dtype=str,
             filling_values="nan",
-            autostrip=True,
-            usecols=range(34)
+            autostrip=True
         )
+
 
         if raw.ndim == 1:
             raw = np.array([raw])
