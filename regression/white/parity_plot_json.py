@@ -2,6 +2,7 @@
 import os
 import sys
 import numpy as np
+import json
 import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
@@ -23,53 +24,77 @@ def extract_last(output, column):
     return output.data[-1, idx]
 
 
-def load_experimental(basename,col_name):
+def load_experimental_json(basename,quantity):
     """
-    Load experimental data for White.
-    Format: test_name   ... col_name    ...
-    Tabular with header_line
+    Load experimental data for a specified quantity from White in JSON format
+    Return numpy arrays of test names and corresponding values and the unit of the quantity.
     """
     root = os.path.dirname(__file__)
-    fpath = os.path.join(root, "data", basename)
+    fpath = os.path.join(root, "metadata\\experimental", basename)
 
     names = []
     values = []
+    unit = ""
 
     with open(fpath, "r") as f:
-        #Finding col_name (matching the strings)
-        header_line = f.readline()
-        if not header_line:
-            raise ValueError(f"File {basename} is empty.")
-            
-        headers = header_line.strip().split("\t")
-        
-        if col_name not in headers:
-            raise ValueError(f"Unable to find '{col_name}' in file. Available columns : {headers}")
-            
-        col_index = headers.index(col_name)
+        #Load the JSON data
+        data = json.load(f)
+        measurements = data.get("measurement", [])
 
-        for line in f:
-            if not line.strip():
-                continue
-            parts = line.strip().split()
-            
-            #For an incomplete line
-            if len(parts) <= col_index:
-                continue
-                
-            names.append(parts[0])
-            if parts[col_index] == "/":
-                values.append(np.nan)
-            else:
-                values.append(float(parts[col_index])) 
+        if not measurements:
+            raise ValueError(f"No measurements found in file {basename}.")
 
-    return np.array(names), np.array(values)
+        for measurement in measurements:
+            if measurement.get("quantity") == quantity:
+                names.append(measurement.get("caseId"))
+                values.append(measurement.get("value"))
+                unit = measurement.get("unit", "")
+
+    if not names:
+        raise ValueError(f"No measurements found for quantity '{quantity}' in file {basename}.")
+    return np.array(names), np.array(values), unit
 
 
+def statistical_analysis(exp_arr, test_arr, gold_arr, quantity, exp_unit):
+    error_test = test_arr - exp_arr
+    error_gold = gold_arr - exp_arr
+    error_output = test_arr - gold_arr
+    # --------------------
+    # Statistical analysis
+    # --------------------
+    print("\n" + "="*50)
+    print(f"STATISTICAL ANALYSIS - {quantity}")
+    print("="*50)
+
+    # Experimental data
+    print(f"Experimental data - mean:   {np.mean(exp_arr):.4f} {exp_unit}")
+    print(f"Experimental data - median: {np.median(exp_arr):.4f} {exp_unit}")
+    print(f"Experimental data - Q1:     {np.percentile(exp_arr, 25, method='midpoint'):.4f} {exp_unit}")
+    print(f"Experimental data - Q3:     {np.percentile(exp_arr, 75, method='midpoint'):.4f} {exp_unit}")
+    print("-" * 30)
+
+    # Current results (test)
+    print(f"Current SCIANTIX  - mean:   {np.mean(test_arr):.4f} {exp_unit}")
+    print(f"Current SCIANTIX  - median: {np.median(test_arr):.4f} {exp_unit}")
+    print(f"Current SCIANTIX  - Q1:     {np.percentile(test_arr, 25, method='midpoint'):.4f} {exp_unit}")
+    print(f"Current SCIANTIX  - Q3:     {np.percentile(test_arr, 75, method='midpoint'):.4f} {exp_unit}")
+    print(f"Current SCIANTIX  - BIAS:   {np.median(error_test):.4f} {exp_unit}")
+    print(f"Current SCIANTIX  - RMSE:   {(np.sqrt(np.mean((error_test/exp_arr)**2)))*100:.4f} %")
+    print(f"Current SCIANTIX  - MAD:    {np.median(np.abs(error_test/exp_arr))*100:.4f} %")
+    print(f"Current SCIANTIX  - max error:   {np.max(np.abs(error_test/exp_arr))*100:.4f} %")
+    print("-" * 30)
+
+    # Gold results
+    print(f"Gold (reference)  - mean:   {np.mean(gold_arr):.4f} {exp_unit}")
+    print(f"Gold (reference)  - median: {np.median(gold_arr):.4f} {exp_unit}")
+    print(f"Gold (reference)  - MAD:    {np.median(np.abs(error_gold)):.4f} {exp_unit}")
+    print(f"Gold (reference)  - RMSE:   {np.sqrt(np.mean(error_gold**2)):.4f} {exp_unit}")
+    print(f"Gold (reference)  - max error:   {np.max(np.abs(error_gold/exp_arr))*100:.4f} %")
+    print("="*50 + "\n")    
 # ------------------------------------------------------------
 # parity_plot function
 # ------------------------------------------------------------
-def parity_plot_white(col_out, col_exp,multireport=False):
+def parity_plot_white(quantity, multireport=False):
 
     root = os.path.dirname(__file__)
     white_root = os.path.abspath(os.path.join(root, "..", "white"))
@@ -77,7 +102,7 @@ def parity_plot_white(col_out, col_exp,multireport=False):
     os.makedirs(outdir, exist_ok=True)
 
     # load experimental data
-    exp_names, exp_values = load_experimental("white_data.txt",col_exp)
+    exp_names, exp_values, exp_unit = load_experimental_json("white_experimental_measurements.jsonld",quantity)
 
     exp_list, gold_list, test_list = [], [], []
     test_names = []
@@ -97,7 +122,7 @@ def parity_plot_white(col_out, col_exp,multireport=False):
         # find experimental value
         idx = np.where(exp_names == test_name)[0]
         if len(idx) == 0:
-            print(f"[WARNING] No experimental {col_exp} for {test_name}")
+            print(f"[WARNING] No experimental {quantity} for {test_name}")
             continue
 
         exp_val = exp_values[idx][0]
@@ -106,8 +131,8 @@ def parity_plot_white(col_out, col_exp,multireport=False):
         out = load_output(case)
         gold = load_gold(case)
 
-        data_test = extract_last(out, col_out)
-        data_gold = extract_last(gold, col_out)
+        data_test = extract_last(out, f"""{quantity} ({exp_unit})""")
+        data_gold = extract_last(gold, f"""{quantity} ({exp_unit})""")
 
         exp_list.append(exp_val)
         gold_list.append(data_gold)
@@ -119,8 +144,8 @@ def parity_plot_white(col_out, col_exp,multireport=False):
     test_arr = np.array(test_list)
 
     # plot
-    parity_plot(exp_arr, gold_arr, test_arr, f"white_{col_exp.replace(' ', '_').replace('/','')}", f"White – {col_exp}", outdir)
-    print(f"""Plotted {col_exp}""")
+    parity_plot(exp_arr, gold_arr, test_arr, f"white_{quantity.replace(' ', '_')}", f"White – {quantity} ({exp_unit})", outdir)
+    print(f"""Plotted {quantity}""")
 
     #Calculating the error
     acceptability_range = 0.5 #50% of the experimental value
@@ -130,38 +155,8 @@ def parity_plot_white(col_out, col_exp,multireport=False):
     error_output = test_arr - gold_arr
 
     if not multireport:
-        # --------------------
-        # Statistical analysis
-        # --------------------
-        print("\n" + "="*50)
-        print(f"STATISTICAL ANALYSIS - {col_exp}")
-        print("="*50)
-
-        # Experimental data
-        print(f"Experimental data - mean:   {np.mean(exp_arr):.4f}")
-        print(f"Experimental data - median: {np.median(exp_arr):.4f}")
-        print(f"Experimental data - Q1:     {np.percentile(exp_arr, 25, method='midpoint'):.4f}")
-        print(f"Experimental data - Q3:     {np.percentile(exp_arr, 75, method='midpoint'):.4f}")
-        print("-" * 30)
-
-        # Current results (test)
-        print(f"Current SCIANTIX  - mean:   {np.mean(test_arr):.4f}")
-        print(f"Current SCIANTIX  - median: {np.median(test_arr):.4f}")
-        print(f"Current SCIANTIX  - Q1:     {np.percentile(test_arr, 25, method='midpoint'):.4f}")
-        print(f"Current SCIANTIX  - Q3:     {np.percentile(test_arr, 75, method='midpoint'):.4f}")
-        print(f"Current SCIANTIX  - BIAS:   {np.median(error_test):.4f}")
-        print(f"Current SCIANTIX  - RMSE:   {(np.sqrt(np.mean((error_test/exp_arr)**2)))*100:.4f}%")
-        print(f"Current SCIANTIX  - MAD:    {np.median(np.abs(error_test/exp_arr))*100:.4f}%")
-        print(f"Current SCIANTIX  - max error:   {np.max(np.abs(error_test/exp_arr))*100:.4f}%")
-        print("-" * 30)
-
-        # Gold results
-        print(f"Gold (reference)  - mean:   {np.mean(gold_arr):.4f}")
-        print(f"Gold (reference)  - median: {np.median(gold_arr):.4f}")
-        print(f"Gold (reference)  - MAD:    {np.median(np.abs(error_gold)):.4f}")
-        print(f"Gold (reference)  - RMSE:   {np.sqrt(np.mean(error_gold**2)):.4f}")
-        print(f"Gold (reference)  - max error:   {np.max(np.abs(error_gold/exp_arr))*100:.4f}%")
-        print("="*50 + "\n")
+        #Statistical analysis for the current physical quantity
+        statistical_analysis(exp_arr, test_arr, gold_arr, quantity, exp_unit)
 
         #Generating an html report for only one physical quantity
         results = []
@@ -178,7 +173,7 @@ def parity_plot_white(col_out, col_exp,multireport=False):
         for i in range(len(error_output)):
             if abs(error_output[i]) > test_arr[i]*0.1:
                 print(f"[WARNING] Large deviation for {test_names[i]} : Error : {error_output[i]:.4f}, Value (test) : {test_arr[i]:.4f}, Value (gold) : {gold_arr[i]:.4f}")
-        print(f"Tested value : {col_exp} (experimental) vs {col_out} (SCIANTIX output)")
+        print(f"Tested value : {quantity} ({exp_unit})")
         print(f"\nAcceptability range : ±{acceptability_range*100:.0f}% of the experimental value")
 
     else:
@@ -191,43 +186,43 @@ def parity_plot_white(col_out, col_exp,multireport=False):
                 ok_flags.append(True)
         return test_names, ok_flags
 
+def do_multireport(quantities,outdir):
+    accumulated_results = {}
+    results = []
+    test_names = []
+    for quantity in quantities :
+        names, ok_flags = parity_plot_white(quantity, multireport=True)
+        if test_names == []:
+            test_names = names
+        for name, ok in zip(names, ok_flags):
+            if name not in accumulated_results:
+                accumulated_results[name] = []
+            accumulated_results[name].append(ok)
+
+    for name in test_names:
+        ok_list = accumulated_results[name]
+        message = ""
+        if not all(ok_list):
+            message = f"Failed for at least one physical quantity"
+        results.append((name, ok_list, message))
+
+    generate_html_multireport(results, quantities, outdir)
 
 def main():
-    multireport = True
+    multireport = False
     root = os.path.dirname(__file__)
     outdir = os.path.join(root, "figures")
-    #Change the column name depending on which value to compare
-    col_out = "Intergranular bubble concentration (bub/m2)" #Name of the column in the output file
-    col_exp = "Bubble Density (m-2)" #Name of the column in the experimental file
-    #You can find the reference column names in white/data/whitedata_format.txt and white/data/output_format.txt
-    
+    #Change the name depending on which quantity to compare
+    quantity = "Intergranular bubble concentration"
+    #You can find the names of the quantities in metadata/variable/sciantix_variable_catalog.jsonld
+    #or in the output.txt file of each test case
+
     if not multireport:
-        parity_plot_white(col_out, col_exp)
+        parity_plot_white(quantity)
     else:
         #Lists of physical quantities to compare
-        list_col_out = ["Intergranular bubble concentration (bub/m2)","Intergranular gas swelling (/)","Intergranular fractional coverage (/)","Intergranular bubble radius (m)"]
-        list_col_exp = ["Bubble Density (m-2)","Intergranular Swelling (/)","Grain Face Coverage by Porosity (/)","Projected Radius (m)"]
-        
-        accumulated_results = {}
-        results = []
-        test_names = []
-        for col_out, col_exp in zip(list_col_out, list_col_exp):
-            names, ok_flags = parity_plot_white(col_out, col_exp, multireport=True)
-            if test_names == []:
-                test_names = names
-            for name, ok in zip(names, ok_flags):
-                if name not in accumulated_results:
-                    accumulated_results[name] = []
-                accumulated_results[name].append(ok)
-
-        for name in test_names:
-            ok_list = accumulated_results[name]
-            message = ""
-            if not all(ok_list):
-                message = f"Failed for at least one physical quantity"
-            results.append((name, ok_list, message))
-
-        generate_html_multireport(results, list_col_exp, outdir)
+        quantities = ["Intergranular bubble concentration","Intergranular gas swelling","Intergranular fractional coverage","Intergranular bubble radius"]
+        do_multireport(quantities, outdir)
 
 if __name__ == "__main__":
     main()
