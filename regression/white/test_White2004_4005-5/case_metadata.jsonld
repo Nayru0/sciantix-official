@@ -51,7 +51,7 @@
     "dcat:Dataset"
   ],
   "caseId": "test_White2004_4005-5",
-  "generatedAt": "2026-07-27T12:30:34+00:00",
+  "generatedAt": "2026-08-04T09:29:56+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -117,7 +117,7 @@
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
     "repository_branch": "main",
-    "repository_commit": "70b658f12310f2634748cdf15fd71e46ce8ef1dc",
+    "repository_commit": "5629d8da618a9b01293e9d4b7bd93f22e0b1ff62",
     "repository_is_dirty": true
   },
   "inputFile": [
@@ -142,7 +142,7 @@
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "ad34dc15741be81d7aa566a15a31075c7b05b04841088e78bd19413105bfc8c4",
+      "sha256": "c33e0cbec931f699baf4cffb89ea3abc7601abc85a25cd1716b9b1fbca8e76f5",
       "size_bytes": 14249
     }
   ],
@@ -156,13 +156,31 @@
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "39d20a505db5466cdb2782ea8a916aa2aeebf17aaf0e63c45e3f50932220465f",
+      "sha256": "c3d649224293716a08e199372bb5bcdc7585e5d935393ce8d810a9306e6f15ae",
       "size_bytes": 463078
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "859de4895e215d8b0c88116267fb82de5c9faf1d190fbb1d9be6f356d129620d",
+      "sha256": "136b64f7c990152ba4021c8cf004528e62203aaf493d9af8b5bbbf7ef022a201",
+      "size_bytes": 419866
+    },
+    {
+      "role": "native_gold_output",
+      "path": "output_gold.txt",
+      "sha256": "a0086c1bb7de170665b7180b866d9abd13bf9bf1825c8b1b1db5eea25f602a02",
+      "size_bytes": 238140
+    },
+    {
+      "role": "structured_gold_output",
+      "path": "gold.json",
+      "sha256": "c3d649224293716a08e199372bb5bcdc7585e5d935393ce8d810a9306e6f15ae",
+      "size_bytes": 463078
+    },
+    {
+      "role": "semantic_gold_output",
+      "path": "gold.jsonld",
+      "sha256": "136b64f7c990152ba4021c8cf004528e62203aaf493d9af8b5bbbf7ef022a201",
       "size_bytes": 419866
     }
   ]

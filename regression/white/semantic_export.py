@@ -714,9 +714,12 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
     - ``case_metadata.jsonld`` for case-level provenance and source links.
     """
     output_txt = os.path.join(case_dir, "output.txt")
+    output_gold_txt = os.path.join(case_dir, "output_gold.txt")
     input_json = os.path.join(case_dir, "input.json")
     output_json = os.path.join(case_dir, "output.json")
     output_jsonld = os.path.join(case_dir, "output.jsonld")
+    output_gold_json = os.path.join(case_dir, "gold.json")
+    output_gold_jsonld = os.path.join(case_dir, "gold.jsonld")
     case_metadata_jsonld = os.path.join(case_dir, "case_metadata.jsonld")
 
     if not os.path.isfile(output_txt):
@@ -724,9 +727,11 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
 
     input_payload = _load_input_payload(case_dir)
     header, rows = _load_output_tsv(output_txt)
+    header_gold, rows_gold = _load_output_tsv(output_gold_txt)
     white_root = os.path.dirname(__file__)
     label_map = _load_variable_label_map(white_root)
     columns = _build_columns(header, label_map)
+    columns_gold = _build_columns(header_gold, label_map)
     exported_at = _exported_at_utc(case_dir)
     case_id = os.path.basename(os.path.normpath(case_dir))
     white_root = os.path.dirname(__file__)
@@ -773,10 +778,26 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
         },
     }
 
+    payload_gold_json = {
+        "format_version": "0.1.0",
+        "schema": _SCHEMA_RELATIVE_PATH,
+        "case_id": case_id,
+        "generated_at_utc": exported_at,
+        "dcterms_sources": _DCTERMS_SOURCES,
+        "table": {
+            "columns": columns_gold,
+            "rows": rows_gold,
+        },
+    }
+
     _validate_export_payload(payload_json)
 
     with open(output_json, "w", encoding="utf-8") as handle:
         json.dump(payload_json, handle, indent=2)
+        handle.write("\n")
+
+    with open(output_gold_json, "w", encoding="utf-8") as handle:
+        json.dump(payload_gold_json, handle, indent=2)
         handle.write("\n")
 
     payload_jsonld = {
@@ -819,8 +840,52 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
         "rows": rows,
     }
 
+    payload_gold_jsonld = {
+            "@context": {
+                "csvw": "http://www.w3.org/ns/csvw#",
+                "dcterms": "http://purl.org/dc/terms/",
+                "qudt": "https://qudt.org/schema/qudt/",
+                "schema": "https://schema.org/",
+                "skos": "http://www.w3.org/2004/02/skos/core#",
+                "xsd": "http://www.w3.org/2001/XMLSchema#",
+                "caseId": "dcterms:identifier",
+                "generatedAt": {
+                    "@id": "dcterms:created",
+                    "@type": "xsd:dateTime",
+                },
+                "source": {
+                    "@id": "dcterms:source",
+                    "@type": "@id",
+                },
+                "columns": "csvw:column",
+                "rows": "csvw:row",
+                "label": "skos:prefLabel",
+                "unit": "qudt:unit",
+                "unitURI": {
+                    "@id": "qudt:unit",
+                    "@type": "@id",
+                },
+                "catalogVariable": {
+                    "@id": "dcterms:references",
+                    "@type": "@id",
+                },
+                "index": "schema:position",
+                "name": "schema:name",
+            },
+            "@type": "csvw:Table",
+            "caseId": case_id,
+            "generatedAt": exported_at,
+            "source": _DCTERMS_SOURCES,
+            "columns": columns_gold,
+            "rows": rows_gold,
+        }
+
     with open(output_jsonld, "w", encoding="utf-8") as handle:
         json.dump(payload_jsonld, handle, indent=2)
+        handle.write("\n")
+
+    with open(output_gold_jsonld, "w", encoding="utf-8") as handle:
+        json.dump(payload_gold_jsonld, handle, indent=2)
         handle.write("\n")
 
     metadata_input_files = dict(input_payload["files"])
@@ -831,7 +896,11 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
         "native_output": _file_record(case_dir, "output.txt", "native_output"),
         "structured_output": _file_record(case_dir, "output.json", "structured_output"),
         "semantic_output": _file_record(case_dir, "output.jsonld", "semantic_output"),
+        "native_gold_output": _file_record(case_dir, "output_gold.txt", "native_gold_output"),
+        "structured_gold_output": _file_record(case_dir, "gold.json", "structured_gold_output"),
+        "semantic_gold_output": _file_record(case_dir, "gold.jsonld", "semantic_gold_output"),
     }
+    
     payload_case_metadata = _build_case_metadata(
         case_id,
         exported_at,

@@ -6,7 +6,7 @@ import json
 import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output, load_gold
+from regression.core.common import load_output, load_gold, load_output_json, load_gold_json
 from regression.core.plot import parity_plot
 from regression.core.report import generate_html_report
 from regression.core.multireport import generate_html_multireport
@@ -15,15 +15,6 @@ from regression.core.multireport import generate_html_multireport
 # ------------------------------------------------------------
 # utils
 # ------------------------------------------------------------
-def extract_last(output, column):
-    """Return the last timestep value of a given column."""
-    header = [h.strip() for h in output.header]
-    if column not in header:
-        raise KeyError(f"Column '{column}' not found in output.header")
-    idx = header.index(column)
-    return output.data[-1, idx]
-
-
 def load_experimental_json(basename,quantity):
     """
     Load experimental data for a specified quantity from White in JSON format
@@ -128,11 +119,11 @@ def parity_plot_white(quantity, multireport=False):
         exp_val = exp_values[idx][0]
 
         # load sciantix outputs
-        out = load_output(case)
-        gold = load_gold(case)
+        out = load_output_json(case)
+        gold = load_gold_json(case)
 
-        data_test = extract_last(out, f"""{quantity} ({exp_unit})""")
-        data_gold = extract_last(gold, f"""{quantity} ({exp_unit})""")
+        data_test = out.get_last(quantity)
+        data_gold = gold.get_last(quantity)
 
         exp_list.append(exp_val)
         gold_list.append(data_gold)
