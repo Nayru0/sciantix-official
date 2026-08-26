@@ -200,7 +200,7 @@ def do_multireport(quantities,outdir):
     generate_html_multireport(results, quantities, outdir)
 
 def main():
-    multireport = False
+    multireport = True
     root = os.path.dirname(__file__)
     outdir = os.path.join(root, "figures")
     #Change the name depending on which quantity to compare

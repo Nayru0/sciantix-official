@@ -14,7 +14,7 @@ import numpy as np
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple, Any
 
-from numpy import NaN
+from numpy import nan
 
 from regression.white.variable_metadata_export import export_variable_catalog, unit_uri
 
