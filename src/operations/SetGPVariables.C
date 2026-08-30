@@ -52,7 +52,7 @@ double bilinearInterpolation(const std::vector<std::vector<double>>& matrix,
                              double                                  val1,
                              double                                  val2)
 {
-    // Find the index I such that val1 falls between x[I-1] and x[I]
+    // Find the amazing index I such that val1 falls between x[I-1] and x[I]
     int I = 0;
     while (I < static_cast<int>(x.size()) && x[I] < val1)
     {

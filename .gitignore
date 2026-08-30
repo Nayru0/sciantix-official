@@ -54,7 +54,14 @@ compile_commands.json
 
 docs/build/
 docs/doxygen/
+docs/source/api/
 latex/
+
+# Written by the regression runner on every run
+regression/report.html
+
+# Written by ErrorMessages next to the case that produced it
+error_log.txt
 
 
 ########################################

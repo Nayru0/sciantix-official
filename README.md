@@ -16,11 +16,18 @@ Currently, SCIANTIX is validated against experimental data for:
 
 The validation database and regression suite are available in the `regression/` directory.
 
+# Training
+
+Training material — tutorials, hands-on cases, and the OperaHPC online training —
+is maintained in a dedicated repository: 
+- [sciantix-training](https://github.com/sciantix/sciantix-training)
+- [OperaHPC Online Training](https://github.com/sciantix/sciantix-training/tree/main/training/OperaHPC_online_training)
+
 # Installation
 
 Recommended requirements:
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
-- CMake ≥ 3.6
+- CMake ≥ 3.10
 - Python 3.8+ (for regression suite)
 
 ## Quick installation (Linux/WSL2)
