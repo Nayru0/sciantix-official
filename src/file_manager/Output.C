@@ -62,7 +62,7 @@ std::string removeParentheses(const std::string& unit)
 }
 
 // This function outputs the simulation results to a JSON file and an overview text file.
-// WARNING : This function may be unfinished and not fully compatible with all the tests
+// OutdatedOuput.c is the original version of thi function, writing txt files instead of JSON files. It is kept for reference and comparison purposes.
 void Simulation::output()
 {
     bool isLast = false;

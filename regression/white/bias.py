@@ -110,11 +110,11 @@ def write_scaling_factors(case_dir, overrides):
 def restore_case(case_dir, original_output):
     """Leave a case byte-for-byte as it was before the sweep.
 
-    Restores output.txt from its snapshot (or removes it if it did not exist),
+    Restores output.json from its snapshot (or removes it if it did not exist),
     deletes the temporary input_scaling_factors.txt, and removes the stray run
     artifacts SCIANTIX writes (execution.txt, overview.txt, input_check.txt).
     """
-    out_path = os.path.join(case_dir, "output.txt")
+    out_path = os.path.join(case_dir, "output.json")
     if original_output is None:
         if os.path.isfile(out_path):
             os.remove(out_path)
@@ -171,7 +171,7 @@ def main():
 
     exp_arr = np.array([c[2] for c in cases])
 
-    # Static reference: gold swelling from output_gold.txt (independent of the
+    # Static reference: gold swelling from gold.json (independent of the
     # scaling factors). These points stay fixed across the whole sweep.
     gold_arr = np.array([load_gold(c[1]).get_last(COL_SWELL) * 100.0 for c in cases])
 
@@ -182,11 +182,11 @@ def main():
     print(f"\nSweeping [{sweep_label}] over {len(combos)} combinations "
           f"on {len(cases)} White cases.\n")
 
-    # Snapshot each case's original output.txt so the directories can be restored
-    # exactly after the sweep (output.txt is a tracked file in the suite).
+    # Snapshot each case's original output.json so the directories can be restored
+    # exactly after the sweep (output.json is a tracked file in the suite).
     snapshots = {}
     for name, case_dir, _ in cases:
-        out_path = os.path.join(case_dir, "output.txt")
+        out_path = os.path.join(case_dir, "output.json")
         snapshots[case_dir] = open(out_path, "rb").read() if os.path.isfile(out_path) else None
 
     results = []           # one dict per combination

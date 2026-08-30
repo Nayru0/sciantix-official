@@ -9,6 +9,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import shutil
 
+from regression.core.common import load_output, load_gold
+
 def import_data(filename):
     """
     Imports a tab-delimited .txt file into a NumPy ndarray.
@@ -183,7 +185,7 @@ def sciantix_dictionary(file):
 
 def check_result(number_of_tests_failed):
     """Verify the test results by comparing output with gold standard."""
-    if are_files_equal('output.txt', 'output_gold.txt'):
+    if are_files_equal('output.json', 'gold.json'):
         print("Test passed!\n")
     else:
         print("Test failed!\n")
@@ -193,15 +195,15 @@ def check_result(number_of_tests_failed):
 def check_output(file):
     """Verify the existence of the output files and read their data."""
     try:
-        data = import_data("output.txt")
+        data = load_output(file)
     except FileNotFoundError:
-        print("output.txt not found in", file)
+        print("output.json not found in", file)
         data = np.zeros((1, 1))
 
     try:
-        data_gold = import_data("output_gold.txt")
+        data_gold = load_gold(file)
     except FileNotFoundError:
-        print("output_gold.txt not found in", file)
+        print("gold.json not found in", file)
         data_gold = np.ones((1, 1))
 
     return data, data_gold
@@ -226,12 +228,12 @@ def do_sciantix_only():
 
 def do_gold():
     """Replace the existing gold file with the latest output."""
-    if os.path.exists('output.txt'):
-        if os.path.exists('output_gold.txt'):
-            os.remove('output_gold.txt')
-        shutil.copy('output.txt', 'output_gold.txt')        
+    if os.path.exists('output.json'):
+        if os.path.exists('gold.json'):
+            os.remove('gold.json')
+        shutil.copy('output.json', 'gold.json')        
 
     else:
-        print("output.txt not found for golding")
+        print("output.json not found for golding")
         
 		

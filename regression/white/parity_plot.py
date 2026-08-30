@@ -158,6 +158,7 @@ def parity_plot_white(quantity, multireport=False):
                 message = f"Value different from gold case by more than 10%"
             results.append((test_names[i],ok,message))
 
+        #Generating an html report for only one physical quantity comparing the current SCIANTIX results with the experimental values
         outdir = os.path.join(root, "figures")
         generate_html_report(results, outdir + "/reports")
 
@@ -197,10 +198,11 @@ def do_multireport(quantities,outdir):
             message = f"Failed for at least one physical quantity"
         results.append((name, ok_list, message))
 
+    #Multireport comparing experimental values with the current SCIANTIX results for multiple physical quantities
     generate_html_multireport(results, quantities, outdir + "/reports")
 
 def main():
-    multireport = False
+    multireport = True
     root = os.path.dirname(__file__)
     outdir = os.path.join(root, "figures")
     #Change the name depending on which quantity to compare

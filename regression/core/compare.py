@@ -58,13 +58,13 @@ def compare_outputs(out, gold,
                     print(f"  col={i}, output={o!r}, gold={g!r}")
         return False
 
-    if out.data.shape != gold.data.shape:
+    if out.values.shape != gold.values.shape:
         if verbose:
             print(f"[compare] Shape mismatch: "
-                  f"output={out.data.shape}, gold={gold.data.shape}")
+                  f"output={out.values.shape}, gold={gold.values.shape}")
         return False
 
-    ok, diff, bad_mask = compare_arrays(out.data, gold.data,
+    ok, diff, bad_mask = compare_arrays(out.values, gold.values,
                                         abs_tol, rel_tol)
 
     if not ok and verbose:
@@ -72,7 +72,7 @@ def compare_outputs(out, gold,
         rows, cols = np.where(bad_mask)
         for r, c in zip(rows, cols):
             print(f"  row={r}, col={c}, "
-                  f"output={out.data[r,c]}, gold={gold.data[r,c]}, "
+                  f"output={out.values[r,c]}, gold={gold.values[r,c]}, "
                   f"diff={diff[r,c]}")
 
     return ok

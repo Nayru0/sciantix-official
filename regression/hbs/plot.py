@@ -41,9 +41,9 @@ def main():
     # The HBS test case is in 'test_UO2HBS' subdir
     test_dir = os.path.join(script_dir, "test_UO2HBS")
     
-    output_path = os.path.join(test_dir, "output.txt")
+    output_path = os.path.join(test_dir, "output.json")
     if not os.path.isfile(output_path):
-        print(f"Error: output.txt not found at {output_path}")
+        print(f"Error: output.json not found at {output_path}")
         return
 
     # Load output
@@ -64,14 +64,14 @@ def main():
         idx_density = headers.index("HBS pore density (pores/m3)")
         idx_radius = headers.index("HBS pore radius (m)")
     except ValueError as e:
-        print(f"Error finding columns in output.txt: {e}")
+        print(f"Error finding columns in output.json: {e}")
         print("Available headers:", headers)
         return
 
-    bu_sim = sim_data.data[:, idx_bu]
-    porosity_sim = sim_data.data[:, idx_porosity]
-    density_sim = sim_data.data[:, idx_density]
-    radius_sim = sim_data.data[:, idx_radius]
+    bu_sim = sim_data.values[:, idx_bu]
+    porosity_sim = sim_data.values[:, idx_porosity]
+    density_sim = sim_data.values[:, idx_density]
+    radius_sim = sim_data.values[:, idx_radius]
 
     # Load experimental data
     f_density = os.path.join(test_dir, "exp_pore_density.txt")

@@ -51,7 +51,7 @@
     "dcat:Dataset"
   ],
   "caseId": "test_White2004_4136-4",
-  "generatedAt": "2026-08-26T11:43:37+00:00",
+  "generatedAt": "2026-08-30T20:49:25+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -124,7 +124,7 @@
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
     "repository_branch": "main",
-    "repository_commit": "e61b43a93a86277c77e1f880b760b5e76b3d4902",
+    "repository_commit": "76728c0dc62193475fd273a14ba541e9884ab38f",
     "repository_is_dirty": true
   },
   "inputFile": [
@@ -149,7 +149,7 @@
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "225a5b86b29d5404576b958e09279c2e84e4ab42f2a0bb9d3c5d325a8befa30f",
+      "sha256": "e1d92bb67e43a89b1ba56b80de72c0c40ac0cb5789375d11feb65dab706eeb2c",
       "size_bytes": 13858
     }
   ],
@@ -163,13 +163,13 @@
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "a4f57e15285ce0af944397dc43a9e306f722dbe2d685ccd16c036842a3e2e7dd",
+      "sha256": "99168f68c7385a278a4b8e47c062fb3e4cd7a195a570e118f710304cfe62a948",
       "size_bytes": 513877
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "e15f3ef2d72f83d1cf1507b7536a4ffae443ea2b60b0c20b1df19708badbf41a",
+      "sha256": "40ceba5c24340f972ac613beb24320e536a73b370b6dfb823bd29e964afad883",
       "size_bytes": 463437
     },
     {
@@ -181,13 +181,13 @@
     {
       "role": "structured_gold_output",
       "path": "gold.json",
-      "sha256": "a4f57e15285ce0af944397dc43a9e306f722dbe2d685ccd16c036842a3e2e7dd",
+      "sha256": "99168f68c7385a278a4b8e47c062fb3e4cd7a195a570e118f710304cfe62a948",
       "size_bytes": 513877
     },
     {
       "role": "semantic_gold_output",
       "path": "gold.jsonld",
-      "sha256": "e15f3ef2d72f83d1cf1507b7536a4ffae443ea2b60b0c20b1df19708badbf41a",
+      "sha256": "40ceba5c24340f972ac613beb24320e536a73b370b6dfb823bd29e964afad883",
       "size_bytes": 463437
     }
   ]

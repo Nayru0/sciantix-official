@@ -34,16 +34,16 @@ def run_single_case(args):
             run_sciantix(case)
 
             ### NEO4MAT - SCIANTIX-DIVA
-            if group_name == "white":
-                export_white_case_semantic_outputs(case)
+            #if group_name == "white":
+            #    export_white_case_semantic_outputs(case)
             ### 
 
             clean_case_dir(case, 0)
 
         # gold rewrite mode
         if mode_gold in (1, 3):
-            shutil.copy(os.path.join(case, "output.txt"),
-                        os.path.join(case, "output_gold.txt"))
+            shutil.copy(os.path.join(case, "output.json"),
+                        os.path.join(case, "gold.json"))
             return (test_id, True, None)
 
         # compare

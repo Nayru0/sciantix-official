@@ -100,10 +100,8 @@ int main(int argc, char** argv)
                    Hydrostaticstress_input,
                    Steampressure_input);
 
-    // std::string outputPath = TestPath + "output.txt";
-    std::string outputPath2 = TestPath + "output.json";
-    // remove(outputPath.c_str());
-    remove(outputPath2.c_str());
+    std::string outputPath = TestPath + "output.json";
+    remove(outputPath.c_str());
 
     //Load the catalog of variables to write the URI in the output file
     std::string catalogPath = TestPath + "../../white/metadata/variables/sciantix_variable_catalog.jsonld";

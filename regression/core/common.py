@@ -7,7 +7,7 @@ author: Giovanni Zullo
 import os
 import subprocess
 import glob
-from regression.core.parser import SciantixOutput, SciantixOutputJson
+from regression.core.parser import SciantixOutput
 
 
 def clean_case_dir(case_dir: str, mode_gold: int):
@@ -22,8 +22,8 @@ def clean_case_dir(case_dir: str, mode_gold: int):
         - *.tmp
 
     Removed only when appropriate:
-        - output.txt          (always removed before a new run)
-        - output_gold.txt     (removed only in gold-writing modes 1 or 3)
+        - output.json          (always removed before a new run)
+        - gold.json     (removed only in gold-writing modes 1 or 3)
     """
 
     patterns_always = [
@@ -34,7 +34,7 @@ def clean_case_dir(case_dir: str, mode_gold: int):
         "*.tmp",
     ]
 
-    patterns_gold = ["output_gold.txt"] if mode_gold in (1, 3) else []
+    patterns_gold = ["gold.json"] if mode_gold in (1, 3) else []
 
     for pattern in patterns_always + patterns_gold:
         for path in glob.glob(os.path.join(case_dir, pattern)):
@@ -48,7 +48,7 @@ def run_sciantix(case_dir: str):
     Execute sciantix.x from the build directory.
 
     Returns:
-        path to output.txt
+        path to output.json
     """
     # sciantix.x built inside build/
     # __file__ = regression/core/common.py
@@ -67,22 +67,12 @@ def run_sciantix(case_dir: str):
     print("Running:", " ".join(cmd))
     subprocess.run(cmd, check=True)
 
-    return os.path.join(case_dir, "output.txt")
-
-
-
-# def load_output(case_dir):
-#     """Load case_dir/output.txt as a SciantixOutput object."""
-#     return SciantixOutput(os.path.join(case_dir, "output.txt"))
-
-# def load_gold(case_dir):
-#     """Load case_dir/gold.txt as a SciantixOutput object."""
-#     return SciantixOutput(os.path.join(case_dir, "output_gold.txt"))
+    return os.path.join(case_dir, "output.json")
 
 def load_output(case_dir):
     """Load case_dir/output.json as a SciantixOutput object."""
-    return SciantixOutputJson(os.path.join(case_dir, "output.json"))
+    return SciantixOutput(os.path.join(case_dir, "output.json"))
 
 def load_gold(case_dir):
     """Load case_dir/gold.json as a SciantixOutput object."""
-    return SciantixOutputJson(os.path.join(case_dir, "gold.json"))
+    return SciantixOutput(os.path.join(case_dir, "gold.json"))

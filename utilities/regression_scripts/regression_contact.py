@@ -34,15 +34,15 @@ def check_result(number_of_tests_failed):
 # Verify the existence of the files: output.txt and output_gold.txt
 def check_output(file):
   try :
-    data = import_data("output.txt")
+    data = load_output(file)
   except :
-    print(f"output.txt not found in {file}")
+    print(f"output.json not found in {file}")
     data = np.zeros(shape=(1, 1))
 
   try :
-    data_gold = import_data("output_gold.txt")
+    data_gold = load_gold(file)
   except :
-    print(f"output_gold.txt not found in {file}")
+    print(f"gold.json not found in {file}")
     data_gold = np.ones(shape=(1, 1))
 
   return data, data_gold
@@ -63,16 +63,16 @@ def do_sciantix():
   os.remove("input_check.txt")
   # os.remove("overview.txt")
 
-# Replace the existing output_gold.txt with the new output.txt
+# Replace the existing gold.json with the new output.json
 def do_gold():
   try :
-    os.path.exists('output.txt')
+    os.path.exists('output.json')
 
-    os.remove('output_gold.txt')
-    os.rename('output.txt', 'output_gold.txt')
+    os.remove('gold.json')
+    os.rename('output.json', 'gold.json')
 
   except :
-    print(f"output.txt not found in {file}")
+    print(f"output.json not found in {file}")
 
 # Plot the regression test results
 def do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_ANS, calculated_Xe133_ANS, time, temperature, burnup, Xe133, Kr85m, expfgr, fgr, burnup2):

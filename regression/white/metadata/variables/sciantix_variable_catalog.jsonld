@@ -52,7 +52,7 @@
   "dcterms:title": "SCIANTIX variable metadata catalog",
   "dcterms:description": "Machine-readable catalog of SCIANTIX input settings, scaling factors, history variables, state variables, and Material/Matrix/Gas/System class properties used to support RDF-mappable case-study metadata.",
   "dcterms:references": "../models/sciantix_physical_models.jsonld",
-  "generatedAt": "2026-08-26T11:43:37+00:00",
+  "generatedAt": "2026-08-30T20:49:25+00:00",
   "variable": [
     {
       "@id": "sciantix-variable:input_setting:igraingrowth",
@@ -1299,10 +1299,6 @@
         {
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 17
-        },
-        {
-          "sourceArray": "Sciantix_variables",
-          "sourceArrayIndex": 71
         }
       ],
       "references": [
@@ -3761,22 +3757,6 @@
       "sourceArrayIndex": 3
     },
     {
-      "@id": "sciantix-variable:scaling_factor:diffusivity2",
-      "@type": "prov:Entity",
-      "identifier": "Diffusivity2",
-      "title": "Diffusivity2",
-      "description": "SCIANTIX scaling factor 'Diffusivity2', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
-      "category": "scaling_factor",
-      "name": "Diffusivity2",
-      "label": "Diffusivity2",
-      "unit": "dimensionless",
-      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
-      "source": "src/operations/SetVariablesFunctions.C",
-      "sourceFile": "src/operations/SetVariablesFunctions.C",
-      "sourceFunction": "getScalingFactorsNames",
-      "sourceArrayIndex": 4
-    },
-    {
       "@id": "sciantix-variable:scaling_factor:temperature",
       "@type": "prov:Entity",
       "identifier": "Temperature",
@@ -3790,7 +3770,7 @@
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
-      "sourceArrayIndex": 5
+      "sourceArrayIndex": 4
     },
     {
       "@id": "sciantix-variable:scaling_factor:fission-rate",
@@ -3801,6 +3781,22 @@
       "category": "scaling_factor",
       "name": "Fission rate",
       "label": "Fission rate",
+      "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 5
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:diffusion-based-release",
+      "@type": "prov:Entity",
+      "identifier": "Diffusion-based release",
+      "title": "Diffusion-based release",
+      "description": "SCIANTIX scaling factor 'Diffusion-based release', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Diffusion-based release",
+      "label": "Diffusion-based release",
       "unit": "dimensionless",
       "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
@@ -4594,42 +4590,6 @@
         "He": 1.0
       },
       "valueSource": "src/operations/SetGas.C"
-    },
-    {
-      "@id": "sciantix-variable:system_property:system-reference",
-      "@type": [
-        "ssn:Property",
-        "prov:Entity"
-      ],
-      "identifier": "System.reference",
-      "title": "reference",
-      "description": "SCIANTIX system property 'reference', generated from the source-code definition in include/classes/System.h.",
-      "category": "system_property",
-      "name": "reference",
-      "label": "reference",
-      "unit": "unspecified",
-      "cppType": "std::string",
-      "source": "include/classes/System.h",
-      "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
-    },
-    {
-      "@id": "sciantix-variable:system_property:system-name",
-      "@type": [
-        "ssn:Property",
-        "prov:Entity"
-      ],
-      "identifier": "System.name",
-      "title": "name",
-      "description": "SCIANTIX system property 'name', generated from the source-code definition in include/classes/System.h.",
-      "category": "system_property",
-      "name": "name",
-      "label": "name",
-      "unit": "unspecified",
-      "cppType": "std::string",
-      "source": "include/classes/System.h",
-      "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
     },
     {
       "@id": "sciantix-variable:system_property:system-yield",
