@@ -19,6 +19,7 @@
 
 #include <fstream>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 /**
  * @file MainVariables.h
@@ -55,6 +56,9 @@ extern double        Number_of_time_steps_per_interval;
 extern std::ofstream Output_file;
 extern std::ofstream Execution_file;
 extern std::string   TestPath;
+extern nlohmann::ordered_json data;
+
+extern std::map<std::string, nlohmann::json> catalogVariables;
 
 extern int                 Input_history_points;
 extern int                 Temperature_input_points;

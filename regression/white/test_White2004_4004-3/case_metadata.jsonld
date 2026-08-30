@@ -51,7 +51,7 @@
     "dcat:Dataset"
   ],
   "caseId": "test_White2004_4004-3",
-  "generatedAt": "2026-08-04T09:29:56+00:00",
+  "generatedAt": "2026-08-26T11:43:37+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -124,71 +124,71 @@
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
     "repository_branch": "main",
-    "repository_commit": "5629d8da618a9b01293e9d4b7bd93f22e0b1ff62",
+    "repository_commit": "e61b43a93a86277c77e1f880b760b5e76b3d4902",
     "repository_is_dirty": true
   },
   "inputFile": [
     {
       "role": "settings",
       "path": "input_settings.txt",
-      "sha256": "44eef2479f4a43fd03a021bbad45c5187f9e767b852de87fc5224aeed0c116d4",
-      "size_bytes": 2502
+      "sha256": "187601b196f902e3214cf3d7cf6f6e5f51ab4a35bcb43120e00e530b53effade",
+      "size_bytes": 2478
     },
     {
       "role": "history",
       "path": "input_history.txt",
-      "sha256": "beada50a12e1ab7bc0af3a965d88d19a87159b8c806beff2573d69af072b61fc",
-      "size_bytes": 482
+      "sha256": "e8a88aff52c7f793bb6a558b405023df9a1dc6f146413375643f393d0f852c0d",
+      "size_bytes": 475
     },
     {
       "role": "initial_conditions",
       "path": "input_initial_conditions.txt",
-      "sha256": "50583a741b24b24855ea321838eb6ecd406724eb1b12095010a5c3212b6c2b9e",
-      "size_bytes": 1201
+      "sha256": "1afaf72c9dd0e91da06a818de85495378ac271c1557cdeec67e2578dd7bcc6fb",
+      "size_bytes": 1176
     },
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "30124c2614c7de42db66011330dd829c6aba81244cd4a56bc4e1f7d5c490aa7d",
-      "size_bytes": 14349
+      "sha256": "29c4e7e877f7c090de74fa4d76a609ec9e2e84a8965eca375d728587c3ed0e3e",
+      "size_bytes": 13861
     }
   ],
   "outputFile": [
     {
       "role": "native_output",
       "path": "output.txt",
-      "sha256": "23175a9000a6baf2df43f338dc0510e6d82370196595e5175a29f9310f83f0d1",
-      "size_bytes": 281379
+      "sha256": "959102fb8dd1bb3b3d19fd6f3bfbac765dae104a31cf5482f9232fc4e6659da6",
+      "size_bytes": 280673
     },
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "4d2c0c52cf986edb04d35f08dfd993506b811e7f14fdcd496ca6f528374baf47",
-      "size_bytes": 542460
+      "sha256": "aff4b9ad875e78ec2442cbdf527df810d219871bd53141882d0030e2a82b8706",
+      "size_bytes": 516792
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "f80c1ed5df5efdccc181d16242a68304594f90a513da922ed44e2dd62924b94a",
-      "size_bytes": 491904
+      "sha256": "ba4f36099c853cc199b516d659982e91124d3712ab891052684d970ab7a3e308",
+      "size_bytes": 466208
     },
     {
       "role": "native_gold_output",
       "path": "output_gold.txt",
-      "sha256": "23175a9000a6baf2df43f338dc0510e6d82370196595e5175a29f9310f83f0d1",
-      "size_bytes": 281379
+      "sha256": "959102fb8dd1bb3b3d19fd6f3bfbac765dae104a31cf5482f9232fc4e6659da6",
+      "size_bytes": 280673
     },
     {
       "role": "structured_gold_output",
       "path": "gold.json",
-      "sha256": "4d2c0c52cf986edb04d35f08dfd993506b811e7f14fdcd496ca6f528374baf47",
-      "size_bytes": 542460
+      "sha256": "aff4b9ad875e78ec2442cbdf527df810d219871bd53141882d0030e2a82b8706",
+      "size_bytes": 516792
     },
     {
       "role": "semantic_gold_output",
       "path": "gold.jsonld",
-      "sha256": "f80c1ed5df5efdccc181d16242a68304594f90a513da922ed44e2dd62924b94a",
-      "size_bytes": 491904
+      "sha256": "ba4f36099c853cc199b516d659982e91124d3712ab891052684d970ab7a3e308",
+      "size_bytes": 466208
     }
   ]
 }

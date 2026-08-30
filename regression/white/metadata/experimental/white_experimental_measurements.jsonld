@@ -23,7 +23,7 @@
   "dcterms:identifier": "white-2004-intergranular-data-validation-targets",
   "dcterms:title": "White intergranular data validation targets for SCIANTIX regression cases",
   "dcterms:description": "Case-level intergranular quantities whose values are used by the SCIANTIX White regression parity workflow.",
-  "generatedAt": "2026-08-04T09:29:56+00:00",
+  "generatedAt": "2026-08-26T11:43:37+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"

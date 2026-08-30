@@ -70,18 +70,19 @@ def run_sciantix(case_dir: str):
     return os.path.join(case_dir, "output.txt")
 
 
-def load_output(case_dir):
-    """Load case_dir/output.txt as a SciantixOutput object."""
-    return SciantixOutput(os.path.join(case_dir, "output.txt"))
 
-def load_output_json(case_dir):
+# def load_output(case_dir):
+#     """Load case_dir/output.txt as a SciantixOutput object."""
+#     return SciantixOutput(os.path.join(case_dir, "output.txt"))
+
+# def load_gold(case_dir):
+#     """Load case_dir/gold.txt as a SciantixOutput object."""
+#     return SciantixOutput(os.path.join(case_dir, "output_gold.txt"))
+
+def load_output(case_dir):
     """Load case_dir/output.json as a SciantixOutput object."""
     return SciantixOutputJson(os.path.join(case_dir, "output.json"))
 
 def load_gold(case_dir):
-    """Load case_dir/gold.txt as a SciantixOutput object."""
-    return SciantixOutput(os.path.join(case_dir, "output_gold.txt"))
-
-def load_gold_json(case_dir):
     """Load case_dir/gold.json as a SciantixOutput object."""
     return SciantixOutputJson(os.path.join(case_dir, "gold.json"))

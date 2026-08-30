@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "MainVariables.h"
+#include <nlohmann/json.hpp>
 
 int    Sciantix_options[SCIANTIX_OPTIONS_SIZE];
 double Sciantix_history[SCIANTIX_HISTORY_SIZE];
@@ -30,6 +31,9 @@ double        Number_of_time_steps_per_interval(100);
 std::ofstream Output_file;
 std::ofstream Execution_file;
 std::string   TestPath;
+nlohmann::ordered_json data;
+
+std::map<std::string, nlohmann::json> catalogVariables;
 
 int                 Input_history_points(0);
 int                 Temperature_input_points;

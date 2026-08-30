@@ -2,7 +2,7 @@
   "format_version": "0.1.0",
   "schema": "../metadata/schema/input.schema.json",
   "case_id": "test_White2004_4135-1",
-  "generated_at_utc": "2026-08-04T09:29:56+00:00",
+  "generated_at_utc": "2026-08-26T11:43:37+00:00",
   "dcterms_sources": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -11,20 +11,20 @@
     "settings": {
       "role": "settings",
       "path": "input_settings.txt",
-      "sha256": "44eef2479f4a43fd03a021bbad45c5187f9e767b852de87fc5224aeed0c116d4",
-      "size_bytes": 2502
+      "sha256": "187601b196f902e3214cf3d7cf6f6e5f51ab4a35bcb43120e00e530b53effade",
+      "size_bytes": 2478
     },
     "history": {
       "role": "history",
       "path": "input_history.txt",
-      "sha256": "75df1e6aea84e26c1e58d953008added9ceb166294e04563ea935618281140d2",
-      "size_bytes": 856
+      "sha256": "9bf76ecbca95de56c6fdca67809cdd28ae4aa95ac6d309d50ed7e83a758ed701",
+      "size_bytes": 843
     },
     "initial_conditions": {
       "role": "initial_conditions",
       "path": "input_initial_conditions.txt",
-      "sha256": "073f8f1472a5bd8e899f24f26748017c32227a2cefac697e527c9f5b7db903c3",
-      "size_bytes": 1201
+      "sha256": "5998764e0a1af19f29f4e42283505c81a8f56f58bd47153a6ef737cf33a605f8",
+      "size_bytes": 1176
     }
   },
   "settings": [
